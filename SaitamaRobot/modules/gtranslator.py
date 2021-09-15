@@ -10,9 +10,7 @@ from SaitamaRobot.modules.disable import DisableAbleCommandHandler
 @run_async
 def totranslate(update: Update, context: CallbackContext):
     message = update.effective_message
-    chat = update.effective_chat
     problem_lang_code = []
-    text = ""
     for key in LANGUAGES:
         if "-" in key:
             problem_lang_code.append(key)
@@ -66,13 +64,13 @@ def totranslate(update: Update, context: CallbackContext):
         if source_lang is None:
             detection = trl.detect(text)
             trans_str = trl.translate(text, lang_tgt=dest_lang)
-            delmsg = message.reply_text(
+            return message.reply_text(
                 f"Translated from `{detection[0]}` to `{dest_lang}`:\n`{trans_str}`",
                 parse_mode=ParseMode.MARKDOWN,
             )
         else:
             trans_str = trl.translate(text, lang_tgt=dest_lang, lang_src=source_lang)
-            delmsg = message.reply_text(
+            message.reply_text(
                 f"Translated from `{source_lang}` to `{dest_lang}`:\n`{trans_str}`",
                 parse_mode=ParseMode.MARKDOWN,
             )
